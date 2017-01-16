@@ -1,12 +1,12 @@
 'use strict';
 
-toQuerystring.serialize = serialize;
-toQuerystring.shake = shake;
-toQuerystring.normalize = normalize;
+stringify.serialize = serialize;
+stringify.shake = shake;
+stringify.normalize = normalize;
 
-module.exports = toQuerystring;
+module.exports = stringify;
 
-function toQuerystring( i ){
+function stringify( i ){
 	var shaken = shake(normalize(i));
 
 	if (shaken === undefined)
