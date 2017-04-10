@@ -3,6 +3,12 @@
 var test = require('tape');
 var stringify = require('./');
 
+// parsers
+var nodejs = require('url').parse;
+var querystringparser = require('querystringparser').parse;
+var qs = require('qs').parse;
+var urijs = require('urijs').parseQuery;
+
 test('normalize', function( t ){
 	t.deepEqual(stringify.normalize([
 		undefined,
@@ -385,4 +391,55 @@ test('serialize (from petkaantonov/querystringparser)', function( t ){
 
 
 	t.end();
+});
+
+test('compatibility with parsers', function( t ){
+	var subject = {
+		a: '',
+		b: 's',
+		c: [ '1', '2', '3' ],
+		d: '&=[]',
+		e: [ '1', '2', [ '3', '4' ] ],
+		f: [ '1', { a: '1' } ],
+	};
+
+	var flattened = {
+		a: '',
+		b: 's',
+		d: '&=[]',
+
+		// expect arrays to be collapsed like this
+		'c[]': [ '1', '2', '3' ],
+
+		// expect objects and multi-level arrays to be flattened like this
+		'e[0]': '1',
+		'e[1]': '2',
+		'e[2][]': [ '3', '4' ],
+		'f[0]': '1',
+		'f[1][a]': '1',
+	};
+
+	t.test('Node.js built-in (flat)', function( t ){
+		t.plan(1);
+
+		t.deepEqual(nodejs('?'+stringify(subject), true).query, flattened);
+	});
+
+	t.test('querystringparser', function( t ){
+		t.plan(1);
+
+		t.deepEqual(querystringparser(stringify(subject)), subject);
+	});
+
+	t.test('qs', function( t ){
+		t.plan(1);
+
+		t.deepEqual(qs(stringify(subject)), subject);
+	});
+
+	t.test('urijs (flat)', function( t ){
+		t.plan(1);
+
+		t.deepEqual(urijs(stringify(subject)), flattened);
+	});
 });

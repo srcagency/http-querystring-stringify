@@ -41,3 +41,58 @@ stringify({
 - `null` is represented by an empty string
 - `undefined` values will be skipped completely
 - arrays will be numbered only if they contain arrays or objects themselves
+
+## Compatibility with parsers
+
+Generally there are two types of parsers: those supporting extended nesting
+and those that just support repeated keys.
+
+### Perfect support (extended nesting):
+
+- [querystringparser](https://github.com/petkaantonov/querystringparser) (read open issues)
+- [qs](https://github.com/ljharb/qs)
+
+```js
+var input = {
+	a: '',
+	b: 's',
+	c: [ '1', '2', '3' ],
+	d: '&=[]',
+	e: [ '1', '2', [ '3', '4' ] ],
+	f: [ '1', { a: '1' } ],
+}
+
+deepEqual(parse(stringify(input)), input);
+	-> true;
+```
+
+### Will flatten:
+
+- [Node.js built-in](https://nodejs.org/api/url.html)
+- [URI.js](https://github.com/medialize/URI.js)
+
+```js
+parse(stringify({
+	a: '',
+	b: 's',
+	c: [ '1', '2', '3' ],
+	d: '&=[]',
+	e: [ '1', '2', [ '3', '4' ] ],
+	f: [ '1', { a: '1' } ],
+}));
+	-> {
+		a: '',
+		b: 's',
+		d: '&=[]',
+
+		// expect arrays to be collapsed like this
+		'c[]': [ '1', '2', '3' ],
+
+		// expect objects and multi-level arrays to be flattened like this
+		'e[0]': '1',
+		'e[1]': '2',
+		'e[2][]': [ '3', '4' ],
+		'f[0]': '1',
+		'f[1][a]': '1',
+	};
+```
