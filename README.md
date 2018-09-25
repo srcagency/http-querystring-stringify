@@ -37,7 +37,7 @@ stringify({
 - `toJSON` is respected (like `JSON.stringify` does)
 - `true` and `false` are converted to `y` or `n` respectively
 - `null` is represented by an empty string
-- `undefined` values will be skipped completely
+- `undefined` values will be skipped completely (like `JSON.stringify` does)
 - arrays will be numbered only if they contain arrays or objects themselves
 
 ## Compatibility with parsers
