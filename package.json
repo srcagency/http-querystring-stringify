@@ -9,7 +9,7 @@
 	},
 	"devDependencies": {
 		"prettier": "^1.14.3",
-		"tape": "^4.6.3"
+		"tape": "^4.9.1"
 	},
 	"prettier": {
 		"semi": false,
