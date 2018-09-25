@@ -4,10 +4,28 @@
 	"version": "1.0.0",
 	"repository": "srcagency/http-querystring-stringify",
 	"scripts": {
-		"test": "node test"
+		"test": "node test",
+		"format": "prettier --write ./*"
 	},
 	"devDependencies": {
+		"prettier": "^1.14.3",
 		"tape": "^4.6.3"
+	},
+	"prettier": {
+		"semi": false,
+		"singleQuote": true,
+		"useTabs": true,
+		"bracketSpacing": false,
+		"trailingComma": "es5",
+		"tabWidth": 4,
+		"overrides": [
+			{
+				"files": "*.md",
+				"options": {
+					"tabWidth": 2
+				}
+			}
+		]
 	},
 	"license": "MIT"
 }

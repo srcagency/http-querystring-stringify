@@ -10,29 +10,27 @@ correctness is prioritized over performance.
 If you need extreme performance you should consider
 https://github.com/petkaantonov/querystringparser.
 
-This package was written because serialization seems to happen most often on
-the client as a single operation and similar performance-focused libraries had
+This package was written because serialization seems to happen most often on the
+client as a single operation and similar performance-focused libraries had
 trade-offs and bugs while others carried huge dependencies.
 
 ```js
-var stringify = require('http-querystring-stringify');
+var stringify = require('http-querystring-stringify')
 
 stringify({
 	first: 'John',
 	last: 'Wayne',
-});
+})
 // -> first=John&last=Wayne
 
 stringify({
-	brands: [ 'KitKat', 'Snickers', 'Bounty' ],
-});
+	brands: ['KitKat', 'Snickers', 'Bounty'],
+})
 // -> brands[]=KitKat&brands[]=Snickers&brands[]=Bounty
 
 stringify({
-	sites: [
-		{ name: 'facebook', 'color': 'blue' },
-	],
-});
+	sites: [{name: 'facebook', color: 'blue'}],
+})
 // -> sites[0][name]=facebook&sites[0][color]=blue
 ```
 
@@ -44,12 +42,13 @@ stringify({
 
 ## Compatibility with parsers
 
-Generally there are two types of parsers: those supporting extended nesting
-and those that just support repeated keys.
+Generally there are two types of parsers: those supporting extended nesting and
+those that just support repeated keys.
 
 ### Perfect support (extended nesting):
 
-- [querystringparser](https://github.com/petkaantonov/querystringparser) (read open issues)
+- [querystringparser](https://github.com/petkaantonov/querystringparser) (read
+  open issues)
 - [qs](https://github.com/ljharb/qs)
 
 ```js

@@ -1,125 +1,105 @@
-'use strict';
+'use strict'
 
-stringify.serialize = serialize;
-stringify.shake = shake;
-stringify.normalize = normalize;
+stringify.serialize = serialize
+stringify.shake = shake
+stringify.normalize = normalize
 
-module.exports = stringify;
+module.exports = stringify
 
-function stringify( i ){
-	if (i === null || typeof i !== 'object' || Array.isArray(i))
-		throw new Error('Only objects can be stringified');
-
-	var shaken = shake(normalize(i));
-
-	if (shaken === undefined)
-		return '';
-
-	return serialize(shaken);
-}
-
-function serialize( i, prefix ){
-	if (Array.isArray(i)) {
-		var hasComplex = i.some(isComplex);
-
-		return i.map(function( i, idx ){
-			return serialize(i, prefix+(hasComplex
-				? '['+idx+']'
-				: '[]'));
-		}).join('&');
+function stringify(i) {
+	if (i === null || typeof i !== 'object' || Array.isArray(i)) {
+		throw new Error('Only objects can be stringified')
 	}
 
-	if (typeof i === 'object')
-		return Object.keys(i).map(function( key ){
-			return serialize(i[key], prefix === undefined
-				? encodeURIComponent(key)
-				: prefix+'['+encodeURIComponent(key)+']');
-		}).join('&');
+	const shaken = shake(normalize(i))
 
-	return prefix+'='+encodeURIComponent(i);
+	if (shaken === undefined) return ''
+	return serialize(shaken)
 }
 
-function shake( i ){
-	if (i === undefined)
-		return;
-
+function serialize(i, prefix) {
 	if (Array.isArray(i)) {
-		var shaken = i.map(shake).filter(isDefined);
+		const hasComplex = i.some(isComplex)
 
-		if (shaken.length === 0)
-			return;
-
-		return shaken;
+		return i
+			.map((i, idx) => {
+				return serialize(
+					i,
+					prefix + (hasComplex ? '[' + idx + ']' : '[]')
+				)
+			})
+			.join('&')
 	}
-
 	if (typeof i === 'object') {
-		var empty = true;
+		return Object.keys(i)
+			.map(key => {
+				return serialize(
+					i[key],
+					prefix === undefined
+						? encodeURIComponent(key)
+						: prefix + '[' + encodeURIComponent(key) + ']'
+				)
+			})
+			.join('&')
+	}
+	return prefix + '=' + encodeURIComponent(i)
+}
 
-		var shaken = Object.keys(i).reduce(function( o, key ){
-			var shaken = shake(i[key]);
+function shake(i) {
+	if (i === undefined) return
+	if (Array.isArray(i)) {
+		const shaken = i.map(shake).filter(isDefined)
+
+		if (shaken.length === 0) return
+		return shaken
+	}
+	if (typeof i === 'object') {
+		let empty = true
+		const shaken = Object.keys(i).reduce((o, key) => {
+			const shaken = shake(i[key])
 
 			if (shaken !== undefined) {
-				empty = false;
-
-				o[key] = shaken;
+				empty = false
+				o[key] = shaken
 			}
 
-			return o;
-		}, {});
+			return o
+		}, {})
 
-		if (empty)
-			return;
+		if (empty) return
+		return shaken
+	}
+	return i
+}
 
-		return shaken;
+function normalize(i) {
+	if (i === undefined) return undefined
+	if (i === null) return ''
+	if (i === true) return 'y'
+	if (i === false) return 'n'
+	if (typeof i.toJSON === 'function') return normalize(i.toJSON())
+
+	const type = typeof i
+
+	if (type === 'string') return i
+	if (Array.isArray(i)) return i.map(normalize)
+	if (type === 'object') {
+		return Object.keys(i).reduce((o, key) => {
+			o[key] = normalize(i[key])
+
+			return o
+		}, {})
 	}
 
-	return i;
+	return i + ''
 }
 
-function normalize( i ){
-	if (i === undefined)
-		return undefined;
-
-	if (i === null)
-		return '';
-
-	if (i === true)
-		return 'y';
-
-	if (i === false)
-		return 'n';
-
-	if (typeof i.toJSON === 'function')
-		return normalize(i.toJSON());
-
-	var type = typeof i;
-
-	if (type === 'string')
-		return i;
-
-	if (Array.isArray(i))
-		return i.map(normalize);
-
-	if (type === 'object')
-		return Object.keys(i).reduce(function( o, key ){
-			o[key] = normalize(i[key]);
-
-			return o;
-		}, {});
-
-	return i+'';
+function isDefined(i) {
+	return i !== undefined
 }
 
-function isDefined( i ){
-	return i !== undefined;
-}
-
-function isComplex( i ){
-	if (Array.isArray(i))
-		return true;
-
-	if (typeof i === 'object')
-		return true;
-
-	return false;
+function isComplex(i) {
+	if (Array.isArray(i)) return true
+	if (typeof i === 'object') return true
+	return false
 }
