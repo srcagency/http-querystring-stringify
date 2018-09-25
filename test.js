@@ -98,6 +98,26 @@ test('serialize', function( t ){
 });
 
 test('stringify', function( t ){
+	t.throws(function(){
+		stringify()
+	}, /Only objects can be stringified/)
+
+	t.throws(function(){
+		stringify(null)
+	}, /Only objects can be stringified/)
+
+	t.throws(function(){
+		stringify('')
+	}, /Only objects can be stringified/)
+
+	t.throws(function(){
+		stringify(1)
+	}, /Only objects can be stringified/)
+
+	t.throws(function(){
+		stringify([])
+	}, /Only objects can be stringified/)
+
 	t.equal(stringify({
 		// normalizes
 		a: true,

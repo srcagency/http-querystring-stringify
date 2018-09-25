@@ -7,6 +7,9 @@ stringify.normalize = normalize;
 module.exports = stringify;
 
 function stringify( i ){
+	if (i === null || typeof i !== 'object' || Array.isArray(i))
+		throw new Error('Only objects can be stringified');
+
 	var shaken = shake(normalize(i));
 
 	if (shaken === undefined)
