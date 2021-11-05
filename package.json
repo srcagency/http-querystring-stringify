@@ -1,7 +1,7 @@
 {
 	"name": "http-querystring-stringify",
 	"description": "Create querystrings",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"repository": "srcagency/http-querystring-stringify",
 	"scripts": {
 		"test": "node test",
