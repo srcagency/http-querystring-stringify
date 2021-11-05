@@ -15,7 +15,7 @@ client as a single operation and similar performance-focused libraries had
 trade-offs and bugs while others carried huge dependencies.
 
 ```js
-const stringify = require('http-querystring-stringify')
+const {stringify, appendToUrl} = require('http-querystring-stringify')
 
 stringify({
 	first: 'John',
@@ -33,12 +33,12 @@ stringify({
 })
 // -> sites[0][name]=facebook&sites[0][color]=blue
 
-stringify.appendToUrl('https://google.com', {
+appendToUrl('https://google.com', {
 	first: 'John',
 	last: 'Wayne',
 })
 // -> https://google.com?first=John&last=Wayne
-stringify.appendToUrl('https://google.com', {
+appendToUrl('https://google.com', {
 	key: undefined,
 })
 // -> https://google.com

@@ -4,6 +4,7 @@ stringify.serialize = serialize
 stringify.shake = shake
 stringify.normalize = normalize
 stringify.appendToUrl = appendToUrl
+stringify.stringify = stringify
 
 module.exports = stringify
 

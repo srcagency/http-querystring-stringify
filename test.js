@@ -14,6 +14,8 @@ test('exported values', (t) => {
 	t.equal(typeof stringify.shake, 'function')
 	t.equal(typeof stringify.normalize, 'function')
 	t.equal(typeof stringify.appendToUrl, 'function')
+	t.equal(typeof stringify.stringify, 'function')
+	t.ok(stringify.stringify === stringify)
 	t.end()
 })
 
