@@ -9,6 +9,14 @@ const querystringparser = require('querystringparser').parse
 const qs = require('qs').parse
 const urijs = require('urijs').parseQuery
 
+test('exported values', (t) => {
+	t.equal(typeof stringify, 'function')
+	t.equal(typeof stringify.shake, 'function')
+	t.equal(typeof stringify.normalize, 'function')
+	t.equal(typeof stringify.appendToUrl, 'function')
+	t.end()
+})
+
 test('normalize', (t) => {
 	t.deepEqual(
 		stringify.normalize([
@@ -512,4 +520,28 @@ test('compatibility with parsers', (t) => {
 
 		t.deepEqual(urijs(stringify(subject)), flattened)
 	})
+})
+
+test('appendToUrl', (t) => {
+	t.equal(
+		stringify.appendToUrl('https://google.com', {
+			first: 'John',
+			last: 'Wayne',
+		}),
+		'https://google.com?first=John&last=Wayne'
+	)
+
+	t.equal(
+		stringify.appendToUrl('https://google.com', {
+			key: undefined,
+		}),
+		'https://google.com'
+	)
+
+	t.equal(
+		stringify.appendToUrl('https://google.com', {}),
+		'https://google.com'
+	)
+
+	t.end()
 })

@@ -3,8 +3,16 @@
 stringify.serialize = serialize
 stringify.shake = shake
 stringify.normalize = normalize
+stringify.appendToUrl = appendToUrl
 
 module.exports = stringify
+
+function appendToUrl(url, i) {
+	const qs = stringify(i)
+
+	if (qs === '') return url
+	return url + '?' + qs
+}
 
 function stringify(i) {
 	if (i === null || typeof i !== 'object' || Array.isArray(i)) {

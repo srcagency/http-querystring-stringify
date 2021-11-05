@@ -32,6 +32,16 @@ stringify({
 	sites: [{name: 'facebook', color: 'blue'}],
 })
 // -> sites[0][name]=facebook&sites[0][color]=blue
+
+stringify.appendToUrl('https://google.com', {
+	first: 'John',
+	last: 'Wayne',
+})
+// -> https://google.com?first=John&last=Wayne
+stringify.appendToUrl('https://google.com', {
+	key: undefined,
+})
+// -> https://google.com
 ```
 
 - `toJSON` is respected (like `JSON.stringify` does)
