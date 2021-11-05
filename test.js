@@ -9,7 +9,7 @@ const querystringparser = require('querystringparser').parse
 const qs = require('qs').parse
 const urijs = require('urijs').parseQuery
 
-test('normalize', t => {
+test('normalize', (t) => {
 	t.deepEqual(
 		stringify.normalize([
 			undefined,
@@ -58,7 +58,7 @@ test('normalize', t => {
 	t.end()
 })
 
-test('shake', t => {
+test('shake', (t) => {
 	t.deepEqual(
 		stringify.shake([
 			undefined,
@@ -83,7 +83,7 @@ test('shake', t => {
 	t.end()
 })
 
-test('serialize', t => {
+test('serialize', (t) => {
 	t.equal(
 		stringify.serialize({
 			a: '',
@@ -101,7 +101,7 @@ test('serialize', t => {
 	t.end()
 })
 
-test('stringify', t => {
+test('stringify', (t) => {
 	t.throws(() => stringify(), /Only objects can be stringified/)
 	t.throws(() => stringify(null), /Only objects can be stringified/)
 	t.throws(() => stringify(''), /Only objects can be stringified/)
@@ -145,7 +145,7 @@ test('stringify', t => {
 	t.end()
 })
 
-test('serialize (from petkaantonov/querystringparser)', t => {
+test('serialize (from petkaantonov/querystringparser)', (t) => {
 	/*
 
 	Tests have been modified where a different result is expected.
@@ -463,7 +463,7 @@ test('serialize (from petkaantonov/querystringparser)', t => {
 	t.end()
 })
 
-test('compatibility with parsers', t => {
+test('compatibility with parsers', (t) => {
 	const subject = {
 		a: '',
 		b: 's',
@@ -489,25 +489,25 @@ test('compatibility with parsers', t => {
 		'f[1][a]': '1',
 	}
 
-	t.test('Node.js built-in (flat)', t => {
+	t.test('Node.js built-in (flat)', (t) => {
 		t.plan(1)
 
 		t.deepEqual(nodejs('?' + stringify(subject), true).query, flattened)
 	})
 
-	t.test('querystringparser', t => {
+	t.test('querystringparser', (t) => {
 		t.plan(1)
 
 		t.deepEqual(querystringparser(stringify(subject)), subject)
 	})
 
-	t.test('qs', t => {
+	t.test('qs', (t) => {
 		t.plan(1)
 
 		t.deepEqual(qs(stringify(subject)), subject)
 	})
 
-	t.test('urijs (flat)', t => {
+	t.test('urijs (flat)', (t) => {
 		t.plan(1)
 
 		t.deepEqual(urijs(stringify(subject)), flattened)

@@ -15,7 +15,7 @@ client as a single operation and similar performance-focused libraries had
 trade-offs and bugs while others carried huge dependencies.
 
 ```js
-var stringify = require('http-querystring-stringify')
+const stringify = require('http-querystring-stringify')
 
 stringify({
 	first: 'John',
@@ -52,17 +52,17 @@ those that just support repeated keys.
 - [qs](https://github.com/ljharb/qs)
 
 ```js
-var input = {
+const input = {
 	a: '',
 	b: 's',
-	c: [ '1', '2', '3' ],
+	c: ['1', '2', '3'],
 	d: '&=[]',
-	e: [ '1', '2', [ '3', '4' ] ],
-	f: [ '1', { a: '1' } ],
+	e: ['1', '2', ['3', '4']],
+	f: ['1', {a: '1'}],
 }
 
-deepEqual(parse(stringify(input)), input);
-	-> true;
+// deepEqual(parse(stringify(input)), input)
+// 	-> true
 ```
 
 ### Will flatten:
@@ -71,27 +71,29 @@ deepEqual(parse(stringify(input)), input);
 - [URI.js](https://github.com/medialize/URI.js)
 
 ```js
-parse(stringify({
-	a: '',
-	b: 's',
-	c: [ '1', '2', '3' ],
-	d: '&=[]',
-	e: [ '1', '2', [ '3', '4' ] ],
-	f: [ '1', { a: '1' } ],
-}));
-	-> {
+parse(
+	stringify({
 		a: '',
 		b: 's',
+		c: ['1', '2', '3'],
 		d: '&=[]',
+		e: ['1', '2', ['3', '4']],
+		f: ['1', {a: '1'}],
+	})
+)
+// -> {
+// 	a: '',
+// 	b: 's',
+// 	d: '&=[]',
 
-		// expect arrays to be collapsed like this
-		'c[]': [ '1', '2', '3' ],
+// 	// expect arrays to be collapsed like this
+// 	'c[]': [ '1', '2', '3' ],
 
-		// expect objects and multi-level arrays to be flattened like this
-		'e[0]': '1',
-		'e[1]': '2',
-		'e[2][]': [ '3', '4' ],
-		'f[0]': '1',
-		'f[1][a]': '1',
-	};
+// 	// expect objects and multi-level arrays to be flattened like this
+// 	'e[0]': '1',
+// 	'e[1]': '2',
+// 	'e[2][]': [ '3', '4' ],
+// 	'f[0]': '1',
+// 	'f[1][a]': '1',
+// }
 ```

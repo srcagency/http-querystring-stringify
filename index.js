@@ -32,7 +32,7 @@ function serialize(i, prefix) {
 	}
 	if (typeof i === 'object') {
 		return Object.keys(i)
-			.map(key => {
+			.map((key) => {
 				return serialize(
 					i[key],
 					prefix === undefined
